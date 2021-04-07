@@ -1,3 +1,3 @@
-package main
+package idasen
 
 // This is the idasen module
