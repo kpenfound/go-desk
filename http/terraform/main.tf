@@ -32,6 +32,7 @@ resource "aws_s3_bucket" "function" {
 
 resource "aws_sqs_queue" "queue" {
   name_prefix = "queue-${local.function_name}"
+  visibility_timeout_seconds = 0
 }
 
 # Lambda Function and API Gateway for http api

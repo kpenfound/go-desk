@@ -33,7 +33,7 @@ func HandleRequest(req events.APIGatewayProxyRequest) (events.APIGatewayProxyRes
 	}
 
 	// Validate position value
-	if position.Position != "sit" || position.Position != "stand" {
+	if position.Position != "sit" && position.Position != "stand" {
 		fmt.Printf("Invalid position specified: ", position.Position)
 		return httpError(500)
 	}
@@ -47,6 +47,7 @@ func HandleRequest(req events.APIGatewayProxyRequest) (events.APIGatewayProxyRes
 	svc := sqs.New(sess)
 
 	_, err = svc.SendMessage(&sqs.SendMessageInput{
+		DelaySeconds: aws.Int64(0),
 		MessageAttributes: map[string]*sqs.MessageAttributeValue{
 			"Position": &sqs.MessageAttributeValue{
 				DataType:    aws.String("String"),
