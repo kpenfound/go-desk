@@ -32,8 +32,6 @@ resource "aws_s3_bucket" "function" {
 
 resource "aws_sqs_queue" "queue" {
   name_prefix = "queue-${local.function_name}"
-  fifo_queue  = true
-  content_based_deduplication = true
 }
 
 # Lambda Function and API Gateway for http api

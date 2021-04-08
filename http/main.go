@@ -14,7 +14,7 @@ import (
 )
 
 type MyEvent struct {
-	Height string `json:"height"`
+	Position string `json:"position"`
 }
 
 func httpError(status int) (events.APIGatewayProxyResponse, error) {
@@ -25,10 +25,16 @@ func httpError(status int) (events.APIGatewayProxyResponse, error) {
 }
 
 func HandleRequest(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	height := new(MyEvent)
-	err := json.Unmarshal([]byte(req.Body), height)
+	position := new(MyEvent)
+	err := json.Unmarshal([]byte(req.Body), position)
 	if err != nil {
-		fmt.Printf(err.Error())
+		fmt.Print(err.Error())
+		return httpError(500)
+	}
+
+	// Validate position value
+	if position.Position != "sit" || position.Position != "stand" {
+		fmt.Printf("Invalid position specified: ", position.Position)
 		return httpError(500)
 	}
 
@@ -39,28 +45,26 @@ func HandleRequest(req events.APIGatewayProxyRequest) (events.APIGatewayProxyRes
 	}))
 
 	svc := sqs.New(sess)
-	message_group_id := "main"
 
 	_, err = svc.SendMessage(&sqs.SendMessageInput{
 		MessageAttributes: map[string]*sqs.MessageAttributeValue{
-			"Height": &sqs.MessageAttributeValue{
+			"Position": &sqs.MessageAttributeValue{
 				DataType:    aws.String("String"),
-				StringValue: aws.String(height.Height),
+				StringValue: aws.String(position.Position),
 			},
 		},
-		MessageBody:    aws.String("Height value is in the Height message attribute"),
-		QueueUrl:       &queueURL,
-		MessageGroupId: &message_group_id,
+		MessageBody: aws.String("Position value is in the Position message attribute"),
+		QueueUrl:    &queueURL,
 	})
 	if err != nil {
 		fmt.Printf(err.Error())
 		return httpError(500)
 	}
 
-	fmt.Printf("Set height to %s\n", height.Height)
+	fmt.Printf("Set position to %s\n", position.Position)
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
-		Body:       fmt.Sprintf("Set height to %s\n", height.Height),
+		Body:       fmt.Sprintf("Set position to %s\n", position.Position),
 	}, nil
 }
 
