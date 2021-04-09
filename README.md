@@ -3,7 +3,7 @@ A Go CLI to interface with standing desks
 
 Hashicorp Eng-serv hackathon spring 2021
 
-My standing desk has a bluetooth interface. Let’s see if we can move it with Go
+My standing desk has a bluetooth interface. Let’s see if we can move it with Go and a public API for fun interactive-ness.
 
 
 ## Idea
