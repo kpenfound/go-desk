@@ -79,7 +79,8 @@ func (l *ListenCommand) Run(args []string) int {
 			MessageAttributeNames: []*string{
 				aws.String(sqs.QueueAttributeNameAll),
 			},
-			QueueUrl: &queueURL,
+			QueueUrl:        &queueURL,
+			WaitTimeSeconds: aws.Int64(10),
 		})
 		if err != nil {
 			log.Println(err)
