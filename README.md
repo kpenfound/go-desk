@@ -38,3 +38,23 @@ doing the `go-desk listen` on my thinkpad which was able to pair with the desk.
 
 For the future, I intend to set up a macropad on my thinkpad to submit the different saved profiles to the desk.  I also want to reimplement
 the python idasen cli in go to learn more about bluetooth.
+
+## Setup
+
+### Backend
+
+1. `cd http; go build; zip function.zip http`
+2. `cd terraform; terraform apply` to create the lambda and s3 bucket
+3. Upload `function.zip` to `$VERSION/function.zip` within the bucket
+4. `terraform apply` again if necessary
+5. Note the output queue url and endpoint url
+
+### Listener
+1. `go build`
+2. `AWS_REGION=? AWS_PROFILE=? ./go-desk listen -queue $QUEUE_URL`
+
+### Frontend
+1. `cd ui`
+2. `export NETLIFY_TOKEN=?` and `export REACT_APP_API_URL=?` where the API url is the `base_url` output from terraform earlier
+3. `dagger project update`
+4. `dagger do deploy`

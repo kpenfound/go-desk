@@ -107,6 +107,7 @@ func (l *ListenCommand) Run(args []string) int {
 				log.Println(err)
 				return 1
 			}
+			time.Sleep(20 * time.Second) // cooldown
 
 		}
 		time.Sleep(5 * time.Second)
