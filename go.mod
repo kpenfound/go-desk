@@ -6,6 +6,7 @@ require (
 	github.com/Khan/genqlient v0.5.0
 	github.com/aws/aws-sdk-go v1.38.15
 	github.com/dagger/cloak v0.0.0-20220906161451-1c7c9f8f035e
+	github.com/hashicorp/vault/api v1.7.2
 	github.com/mitchellh/cli v1.1.2
 )
 

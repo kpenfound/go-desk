@@ -1,0 +1,12 @@
+extend type Query {
+  qvault: Qvault!
+}
+
+type Qvault {
+  secret(
+    address: String!
+    token: String!
+    path: String!
+    key: String!
+  ): SecretID!
+}

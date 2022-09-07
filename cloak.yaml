@@ -1,6 +1,9 @@
-name: foo
+name: godesk
 scripts:
   - path: magefiles
+    sdk: go
+extensions:
+  - path: magefiles/ext
     sdk: go
 dependencies:
   - git:

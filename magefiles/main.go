@@ -3,15 +3,17 @@
 package main
 
 import (
-	"os"
-	"fmt"
 	"context"
+	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/dagger/cloak/engine"
 	"github.com/dagger/cloak/sdk/go/dagger"
 
-	"github.com/kpenfound/go-desk/magefiles/gen/core"
+	vault "github.com/kpenfound/go-desk/magefiles/gen/godesk"
 	"github.com/kpenfound/go-desk/magefiles/gen/netlify"
+	"github.com/kpenfound/go-desk/magefiles/gen/yarn"
 )
 
 // Build and deploy the api to AWS Lambda
@@ -24,41 +26,65 @@ func Infra(ctx context.Context) {
 
 }
 
+// Where our secrets are stored in Vault
+const GODESK_VAULT_PATH = "godesk/deploy"
+const NETLIFY_TOKEN = "netlify_token"
+
 // Build and deploy the website to Netlify
 func Website(ctx context.Context) {
-	if err := engine.Start(ctx, &engine.Config{}, func(ctx engine.Context) error {
-		// User can configure netlify site name with $NETLIFY_SITE_NAME
+	websiteFSID := "website"
+	websitePath, err := filepath.Abs("./website")
+	if err != nil {
+		panic("Failed to deterimine workdir")
+	}
+	buildDirs := make(map[string]string)
+	buildDirs[websiteFSID] = websitePath
+	cfg := &engine.Config{
+		LocalDirs: buildDirs,
+	}
+
+	if err := engine.Start(ctx, cfg, func(ctx engine.Context) error {
+		// Configure Vault
+		address, ok := os.LookupEnv("VAULT_ADDR")
+		if !ok {
+			return fmt.Errorf("VAULT_ADDR not set")
+		}
+		vaultToken, ok := os.LookupEnv("VAULT_TOKEN")
+		if !ok {
+			return fmt.Errorf("VAULT_TOKEN not set")
+		}
+		path := GODESK_VAULT_PATH
+		key := NETLIFY_TOKEN
+
+		// Get secret from Vault
+		token, err := vault.Get(ctx, address, vaultToken, path, key)
+		if err != nil {
+			return fmt.Errorf("Failed to get vault secret")
+		}
 		siteName, ok := os.LookupEnv("NETLIFY_SITE_NAME")
 		if !ok {
 			user, _ := os.LookupEnv("USER")
-			siteName = fmt.Sprintf("%s-dagger-todoapp", user)
+			siteName = fmt.Sprintf("%s-desk", user)
 		}
 		fmt.Printf("Using Netlify site name %q\n", siteName)
 
-		// User must configure netlify API token with $NETLIFY_AUTH_TOKEN
-		tokenCleartext, ok := os.LookupEnv("NETLIFY_AUTH_TOKEN")
-		if !ok {
-			return fmt.Errorf("NETLIFY_AUTH_TOKEN not set")
-		}
-
-		// Load API token into a secret
-		var token dagger.SecretID
-		if resp, err := core.AddSecret(ctx, tokenCleartext); err != nil {
+		// Load website subdirectory
+		var website dagger.FSID
+		ldResp, err := vault.GetLocalDir(ctx, websiteFSID)
+		if err != nil {
 			return err
-		} else {
-			token = resp.Core.AddSecret
 		}
+		website = ldResp.Host.Dir.Read.ID
 
-		// Load source code from workdir
-		var source dagger.FSID
-		if resp, err := core.Workdir(ctx); err != nil {
+		// Yarn build
+		yarnArgs := []string{"build"}
+		_, err = yarn.Script(ctx, website, yarnArgs)
+		if err != nil {
 			return err
-		} else {
-			source = resp.Host.Workdir.Read.ID
 		}
 
-		// Deploy using the netlify deploy extension
-		resp, err := netlify.Deploy(ctx, source, siteName, token)
+		// Deploy to Netlify
+		resp, err := netlify.Deploy(ctx, website, "build", siteName, token.Qvault.Secret)
 		if err != nil {
 			return err
 		}
@@ -81,4 +107,3 @@ func Listener(ctx context.Context) {
 func Listen(ctx context.Context) {
 
 }
-
