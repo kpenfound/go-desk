@@ -37,6 +37,9 @@ doing the `go-desk listen` on my thinkpad which was able to pair with the desk.
 For the future, I intend to set up a macropad on my thinkpad to submit the different saved profiles to the desk.  I also want to reimplement
 the python idasen cli in go to learn more about bluetooth.
 
+## Overengineered for Fun!
+[![](https://mermaid.ink/img/pako:eNo1kE1ug0AMha9izYpI4QIsKvHXKBKt0rLoonRhMiaMGBg6eFqhkLt3QqhX1nufrWdfxdlIEpG4WBxbKN6rAXzFnw1GDYaSpo7NCK_EWjUznPBCXxCGT0uq1bmDxDGbYYEkiD9KiE9HOCDTL867x57kzkK6ugX2tcTNSFcjW43yrdzUzKvhMhqt4duRowXy4GCgUBPTQHaj8jVArR2xMdwu8Bw80tZGM2Q-MryYH5p2Yi96sj0q6Q-83ocrwS31VInItxJtV4lquHnOjdIHz6ViY4XfpSfaC3Rsynk4i4ito38oU-if1W_U7Q93tWYW)](https://mermaid.live/edit#pako:eNo1kE1ug0AMha9izYpI4QIsKvHXKBKt0rLoonRhMiaMGBg6eFqhkLt3QqhX1nufrWdfxdlIEpG4WBxbKN6rAXzFnw1GDYaSpo7NCK_EWjUznPBCXxCGT0uq1bmDxDGbYYEkiD9KiE9HOCDTL867x57kzkK6ugX2tcTNSFcjW43yrdzUzKvhMhqt4duRowXy4GCgUBPTQHaj8jVArR2xMdwu8Bw80tZGM2Q-MryYH5p2Yi96sj0q6Q-83ocrwS31VInItxJtV4lquHnOjdIHz6ViY4XfpSfaC3Rsynk4i4ito38oU-if1W_U7Q93tWYW)
+
 ## Setup
 
 ### Backend
