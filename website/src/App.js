@@ -58,10 +58,10 @@ function App() {
       />
       <header className="App-header">
         <Button onClick={!isLoading ? handleStand : null} disabled={isLoading} variant="success" size="lg">
-          {isLoading ? 'Loading…' : 'Desk go up'}
+          {isLoading ? 'Loading…' : 'Stand'}
         </Button>{' '}
         <Button onClick={!isLoading ? handleSit : null} disabled={isLoading} variant="warning" size="lg">
-          {isLoading ? 'Loading…' : 'Desk go down'}
+          {isLoading ? 'Loading…' : 'Sit'}
         </Button>
       </header>
     </div>
