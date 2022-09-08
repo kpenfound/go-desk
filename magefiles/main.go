@@ -78,13 +78,13 @@ func Website(ctx context.Context) {
 
 		// Yarn build
 		yarnArgs := []string{"build"}
-		_, err = yarn.Script(ctx, website, yarnArgs)
+		yarnResp, err := yarn.Script(ctx, website, yarnArgs)
 		if err != nil {
 			return err
 		}
 
 		// Deploy to Netlify
-		resp, err := netlify.Deploy(ctx, website, "build", siteName, token.Qvault.Secret)
+		resp, err := netlify.Deploy(ctx, yarnResp.Yarn.Script.ID, "build", siteName, token.Qvault.Secret)
 		if err != nil {
 			return err
 		}

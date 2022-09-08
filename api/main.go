@@ -25,6 +25,20 @@ func httpError(status int) (events.APIGatewayProxyResponse, error) {
 }
 
 func HandleRequest(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	headers := map[string]string{
+		"Access-Control-Allow-Headers": "Content-Type",
+		"Access-Control-Allow-Origin":  "https://www.example.com",
+		"Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+	}
+
+	if req.HTTPMethod == "OPTIONS" {
+		return events.APIGatewayProxyResponse{
+			StatusCode: 200,
+			Headers:    headers,
+			Body:       "",
+		}, nil
+	}
+
 	position := new(MyEvent)
 	err := json.Unmarshal([]byte(req.Body), position)
 	if err != nil {
@@ -34,7 +48,7 @@ func HandleRequest(req events.APIGatewayProxyRequest) (events.APIGatewayProxyRes
 
 	// Validate position value
 	if position.Position != "sit" && position.Position != "stand" {
-		fmt.Printf("Invalid position specified: ", position.Position)
+		fmt.Printf("Invalid position specified: %s", position.Position)
 		return httpError(500)
 	}
 
@@ -58,13 +72,14 @@ func HandleRequest(req events.APIGatewayProxyRequest) (events.APIGatewayProxyRes
 		QueueUrl:    &queueURL,
 	})
 	if err != nil {
-		fmt.Printf(err.Error())
+		fmt.Print(err.Error())
 		return httpError(500)
 	}
 
 	fmt.Printf("Set position to %s\n", position.Position)
 	return events.APIGatewayProxyResponse{
 		StatusCode: 200,
+		Headers:    headers,
 		Body:       fmt.Sprintf("Set position to %s\n", position.Position),
 	}, nil
 }
