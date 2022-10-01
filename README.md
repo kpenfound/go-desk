@@ -38,7 +38,14 @@ For the future, I intend to set up a macropad on my thinkpad to submit the diffe
 the python idasen cli in go to learn more about bluetooth.
 
 ## Overengineered for Fun!
-[![](https://mermaid.ink/img/pako:eNo1kE1ug0AMha9izYpI4QIsKvHXKBKt0rLoonRhMiaMGBg6eFqhkLt3QqhX1nufrWdfxdlIEpG4WBxbKN6rAXzFnw1GDYaSpo7NCK_EWjUznPBCXxCGT0uq1bmDxDGbYYEkiD9KiE9HOCDTL867x57kzkK6ugX2tcTNSFcjW43yrdzUzKvhMhqt4duRowXy4GCgUBPTQHaj8jVArR2xMdwu8Bw80tZGM2Q-MryYH5p2Yi96sj0q6Q-83ocrwS31VInItxJtV4lquHnOjdIHz6ViY4XfpSfaC3Rsynk4i4ito38oU-if1W_U7Q93tWYW)](https://mermaid.live/edit#pako:eNo1kE1ug0AMha9izYpI4QIsKvHXKBKt0rLoonRhMiaMGBg6eFqhkLt3QqhX1nufrWdfxdlIEpG4WBxbKN6rAXzFnw1GDYaSpo7NCK_EWjUznPBCXxCGT0uq1bmDxDGbYYEkiD9KiE9HOCDTL867x57kzkK6ugX2tcTNSFcjW43yrdzUzKvhMhqt4duRowXy4GCgUBPTQHaj8jVArR2xMdwu8Bw80tZGM2Q-MryYH5p2Yi96sj0q6Q-83ocrwS31VInItxJtV4lquHnOjdIHz6ViY4XfpSfaC3Rsynk4i4ito38oU-if1W_U7Q93tWYW)
+```mermaid
+graph LR
+    A[fa:fa-desktop Netlify Page] -->|Click Button| B(AWS API Gateway)
+    B --> C(AWS Lambda)
+    C --> D(AWS SQS)
+    D ---|poll queue| E(Go Listener)
+    E -->|bluetooth| F(fa:fa-bolt Desk Moves)
+```
 
 ## Setup
 

@@ -226,18 +226,20 @@ extend type Core {
 	
 
 extend type Query {
-  lambda: Lambda!
+  netlify: Netlify!
 }
 
-type Lambda {
-  upload(
-    aws_access_key_id: String!
-    aws_secret_access_key: SecretID!
-    s3_bucket: String!
-    s3_key: String!
-  ): Boolean!
+type Netlify {
+  deploy(
+    contents: FSID!
+    subdir: String
+    siteName: String
+    token: SecretID!
+  ): SiteURLs!
+}
 
-  compress(
-    directory: FSID!
-  ): Filesystem!
+type SiteURLs {
+  url: String!
+  deployURL: String!
+  logsURL: String
 }

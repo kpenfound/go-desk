@@ -224,20 +224,3 @@ extend type Core {
 	addSecret(plaintext: String!): SecretID!
 }
 	
-
-extend type Query {
-  lambda: Lambda!
-}
-
-type Lambda {
-  upload(
-    aws_access_key_id: String!
-    aws_secret_access_key: SecretID!
-    s3_bucket: String!
-    s3_key: String!
-  ): Boolean!
-
-  compress(
-    directory: FSID!
-  ): Filesystem!
-}

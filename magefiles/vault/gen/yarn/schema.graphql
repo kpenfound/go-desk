@@ -226,18 +226,13 @@ extend type Core {
 	
 
 extend type Query {
-  lambda: Lambda!
+  yarn: Yarn!
 }
 
-type Lambda {
-  upload(
-    aws_access_key_id: String!
-    aws_secret_access_key: SecretID!
-    s3_bucket: String!
-    s3_key: String!
-  ): Boolean!
+type Yarn {
+  script(source: FSID!, runArgs: [String!]): Filesystem!
+}
 
-  compress(
-    directory: FSID!
-  ): Filesystem!
+extend type Filesystem {
+  yarn(runArgs: [String!]): Filesystem!
 }

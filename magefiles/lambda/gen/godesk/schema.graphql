@@ -226,14 +226,18 @@ extend type Core {
 	
 
 extend type Query {
-  qvault: Qvault!
+  lambda: Lambda!
 }
 
-type Qvault {
-  secret(
-    address: String!
-    token: String!
-    path: String!
-    key: String!
-  ): SecretID!
+type Lambda {
+  upload(
+    aws_access_key_id: String!
+    aws_secret_access_key: SecretID!
+    s3_bucket: String!
+    s3_key: String!
+  ): Boolean!
+
+  compress(
+    directory: FSID!
+  ): Filesystem!
 }

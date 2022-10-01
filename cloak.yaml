@@ -3,7 +3,9 @@ scripts:
   - path: magefiles
     sdk: go
 extensions:
-  - path: magefiles/ext
+  - path: magefiles/vault
+    sdk: go
+  - path: magefiles/lambda
     sdk: go
 dependencies:
   - git:
